@@ -68,9 +68,10 @@ public class AreaInfoController extends JeecgController<AreaInfo, IAreaInfoServi
 								   HttpServletRequest req) {
 		String hasQuery = req.getParameter("hasQuery");
         if(hasQuery != null && "true".equals(hasQuery)){
+        	areaInfo.setLevel(1);
             QueryWrapper<AreaInfo> queryWrapper =  QueryGenerator.initQueryWrapper(areaInfo, req.getParameterMap());
             List<AreaInfo> list = areaInfoService.queryTreeListNoPage(queryWrapper);
-            IPage<AreaInfo> pageList = new Page<>(1, 10, list.size());
+            IPage<AreaInfo> pageList = new Page<>(1, 40, list.size());
             pageList.setRecords(list);
             return Result.OK(pageList);
         }else{

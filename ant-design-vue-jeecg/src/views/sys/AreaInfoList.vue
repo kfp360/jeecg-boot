@@ -72,10 +72,10 @@
           <a-dropdown>
             <a class="ant-dropdown-link">更多 <a-icon type="down" /></a>
             <a-menu slot="overlay">
-              <a-menu-item>
+              <a-menu-item v-show="allowdAddChild(record)">
                 <a @click="handleAddChild(record)">添加下级</a>
               </a-menu-item>
-              <a-menu-item>
+              <a-menu-item v-show="allowdDel(record)">
                 <a-popconfirm title="确定删除吗?" @confirm="() => handleDeleteNode(record.id)" placement="topLeft">
                   <a>删除</a>
                 </a-popconfirm>
@@ -345,6 +345,22 @@
         fieldList.push({type:'string',value:'areaName',text:'areaName',dictCode:''})
         fieldList.push({type:'int',value:'parentId',text:'所属父地区id',dictCode:''})
         this.superFieldList = fieldList
+      },
+
+      allowdAddChild(record){
+         let res = false
+         if (!record.areaCode || !(record.areaCode.endsWith('00')) && record.level == 3){
+           res = true
+         }
+        return res
+      },
+
+      allowdDel(record){
+         let res = false
+         if (!record.areaCode || !(record.areaCode.endsWith('00')) && record.level == 4){
+           res = true
+         }
+        return res
       }
     }
   }

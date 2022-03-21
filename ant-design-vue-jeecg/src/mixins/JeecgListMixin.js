@@ -86,6 +86,7 @@ export const JeecgListMixin = {
         if (res.success) {
           //update-begin---author:zhangyafei    Date:20201118  for：适配不分页的数据列表------------
           this.dataSource = res.result.records||res.result;
+          console.log('List Return:',res)
           if(res.result.total)
           {
             this.ipagination.total = res.result.total;

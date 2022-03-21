@@ -392,6 +392,7 @@ public class SysDepartController {
                 Collections.sort(listSysDeparts, new Comparator<SysDepart>() {
                     @Override
 					public int compare(SysDepart arg0, SysDepart arg1) {
+                    	log.info(String.format("arg0 {%s} arg1{%S}", arg0.getDepartName(), arg1.getDepartName()));
                     	return arg0.getOrgCode().length() - arg1.getOrgCode().length();
                     }
                 });

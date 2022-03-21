@@ -25,6 +25,10 @@ public class AreaInfoServiceImpl extends ServiceImpl<AreaInfoMapper, AreaInfo> i
 
 	@Override
 	public void addAreaInfo(AreaInfo areaInfo) {
+
+        AreaInfo parentNode = getById(areaInfo.getParentId());
+        areaInfo.setAreaCode(parentNode.getAreaCode());
+        areaInfo.setLevel(parentNode.getLevel()+1);
 	   //新增时设置hasChild为0
 	    areaInfo.setHasChild(IAreaInfoService.NOCHILD);
 		if(oConvertUtils.isEmpty(areaInfo.getParentId())){
@@ -140,6 +144,7 @@ public class AreaInfoServiceImpl extends ServiceImpl<AreaInfoMapper, AreaInfo> i
     private AreaInfo getTreeRoot(String pidVal){
         AreaInfo data =  baseMapper.selectById(pidVal);
         if(data != null && !"0".equals(data.getParentId())){
+            log.warn(String.format("name{%s},id{%s},parentid{%s}", data.getAreaName(), data.getId(), data.getParentId()));
             return this.getTreeRoot(data.getParentId());
         }else{
             return data;
