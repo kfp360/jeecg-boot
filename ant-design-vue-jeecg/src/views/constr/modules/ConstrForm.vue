@@ -90,66 +90,20 @@
         </a-row>
       </a-form-model>
     </j-form-container>
-      <!-- 子表单区域 -->
-    <a-tabs v-model="activeKey" @change="handleChangeTabs">
-      <a-tab-pane tab="constr_area" :key="refKeys[0]" :forceRender="true">
-        <j-vxe-table
-          keep-source
-          :ref="refKeys[0]"
-          :loading="constrAreaTable.loading"
-          :columns="constrAreaTable.columns"
-          :dataSource="constrAreaTable.dataSource"
-          :maxHeight="300"
-          :disabled="formDisabled"
-          :rowNumber="true"
-          :rowSelection="true"
-          :toolbar="true"
-          />
-      </a-tab-pane>
-      <a-tab-pane tab="constr_attach" :key="refKeys[1]" :forceRender="true">
-        <j-vxe-table
-          keep-source
-          :ref="refKeys[1]"
-          :loading="constrAttachTable.loading"
-          :columns="constrAttachTable.columns"
-          :dataSource="constrAttachTable.dataSource"
-          :maxHeight="300"
-          :disabled="formDisabled"
-          :rowNumber="true"
-          :rowSelection="true"
-          :toolbar="true"
-          />
-      </a-tab-pane>
-      <a-tab-pane tab="constr_street" :key="refKeys[2]" :forceRender="true">
-        <j-vxe-table
-          keep-source
-          :ref="refKeys[2]"
-          :loading="constrStreetTable.loading"
-          :columns="constrStreetTable.columns"
-          :dataSource="constrStreetTable.dataSource"
-          :maxHeight="300"
-          :disabled="formDisabled"
-          :rowNumber="true"
-          :rowSelection="true"
-          :toolbar="true"
-          />
-      </a-tab-pane>
-    </a-tabs>
+ 
   </a-spin>
 </template>
 
 <script>
 
   import { getAction } from '@/api/manage'
-  import { JVxeTableModelMixin } from '@/mixins/JVxeTableModelMixin.js'
-  import { JVXETypes } from '@/components/jeecg/JVxeTable'
-  import { getRefPromise,VALIDATE_FAILED} from '@/components/jeecg/JVxeTable/utils/vxeUtils.js'
+  import { JModelMixin } from '@/mixins/JModelMixin.js'
   import { validateDuplicateValue } from '@/utils/util'
   import JFormContainer from '@/components/jeecg/JFormContainer'
 
   export default {
     name: 'ConstrForm',
-    mixins: [JVxeTableModelMixin],
+    mixins: [JModelMixin],
     components: {
       JFormContainer,
     },
@@ -205,127 +159,8 @@
               { required: true, message: '请输入施工状态!'},
            ],
         },
-        refKeys: ['constrArea', 'constrAttach', 'constrStreet', ],
-        tableKeys:['constrArea', 'constrAttach', 'constrStreet', ],
-        activeKey: 'constrArea',
-        // constr_area
-        constrAreaTable: {
-          loading: false,
-          dataSource: [],
-          columns: [
-            {
-              title: '施工类型(POINT=点施工,LINE=线路施工,POLYGON=面)',
-              key: 'areaType',
-               type: JVXETypes.input,
-              width:"200px",
-              placeholder: '请输入${title}',
-              defaultValue:'',
-              validateRules: [{ required: true, message: '${title}不能为空' }],
-            },
-            {
-              title: '施工位置经度',
-              key: 'longitude',
-               type: JVXETypes.input,
-              width:"200px",
-              placeholder: '请输入${title}',
-              defaultValue:'',
-              validateRules: [{ required: true, message: '${title}不能为空' }],
-            },
-            {
-              title: '施工位置纬度',
-              key: 'latitude',
-               type: JVXETypes.input,
-              width:"200px",
-              placeholder: '请输入${title}',
-              defaultValue:'',
-              validateRules: [{ required: true, message: '${title}不能为空' }],
-            },
-            {
-              title: '施工路径坐标单位',
-              key: 'route',
-               type: JVXETypes.textarea,
-              width:"200px",
-              placeholder: '请输入${title}',
-              defaultValue:'',
-            },
-          ]
-        },
-        // constr_attach
-        constrAttachTable: {
-          loading: false,
-          dataSource: [],
-          columns: [
-            {
-              title: '附件类型  IMAGE=疏解图片 ATTACH=施工附件 CLONKIN=施工打卡 REPORT=隐患上报 PROCESS=隐患处理',
-              key: 'type',
-               type: JVXETypes.input,
-              width:"200px",
-              placeholder: '请输入${title}',
-              defaultValue:'',
-              validateRules: [{ required: true, message: '${title}不能为空' }],
-            },
-            {
-              title: '施工附件url',
-              key: 'attachUrl',
-               type: JVXETypes.input,
-              width:"200px",
-              placeholder: '请输入${title}',
-              defaultValue:'',
-              validateRules: [{ required: true, message: '${title}不能为空' }],
-            },
-          ]
-        },
-        // constr_street
-        constrStreetTable: {
-          loading: false,
-          dataSource: [],
-          columns: [
-            {
-              title: '省',
-              key: 'provinceId',
-              type: JVXETypes.select,
-              options:[],
-              dictCode:"",
-              width:"200px",
-              placeholder: '请输入${title}',
-              defaultValue:'',
-              validateRules: [{ required: true, message: '${title}不能为空' }],
-            },
-            {
-              title: '城市',
-              key: 'municipalId',
-              type: JVXETypes.select,
-              options:[],
-              dictCode:"",
-              width:"200px",
-              placeholder: '请输入${title}',
-              defaultValue:'',
-              validateRules: [{ required: true, message: '${title}不能为空' }],
-            },
-            {
-              title: '区域',
-              key: 'regionId',
-              type: JVXETypes.selectMultiple,
-              options:[],
-              dictCode:"",
-              width:"250px",
-              placeholder: '请输入${title}',
-              defaultValue:'',
-              validateRules: [{ required: true, message: '${title}不能为空' }],
-            },
-            {
-              title: '街道',
-              key: 'streetId',
-              type: JVXETypes.selectMultiple,
-              options:[],
-              dictCode:"",
-              width:"250px",
-              placeholder: '请输入${title}',
-              defaultValue:'',
-              validateRules: [{ required: true, message: '${title}不能为空' }],
-            },
-          ]
-        },
+  
+         
         url: {
           add: "/mng/constr/add",
           edit: "/mng/constr/edit",
@@ -362,15 +197,10 @@
     },
     methods: {
       addBefore(){
-        this.constrAreaTable.dataSource=[]
-        this.constrAttachTable.dataSource=[]
-        this.constrStreetTable.dataSource=[]
+
       },
-      getAllTable() {
-        let values = this.tableKeys.map(key => getRefPromise(this, key))
-        return Promise.all(values)
-      },
-      /** 调用完edit()方法之后会自动调用此方法 */
+ 
+      /** 调用完edit()方法之后会自动调用此方法 */ 
       editAfter() {
         this.$nextTick(() => {
         })
@@ -385,7 +215,10 @@
            // Load Constr 施工附件
           getAction(that.url.constrAttach.list, params).then((res)=>{
             if(res.success){
-              that.model.attachFiles = res.result.map(x=> x.attachUrl).join(',')
+              this.$nextTick(() => {
+                that.model.attachFiles = res.result.map(x=> x.attachUrl).join(',')
+                that.$forceUpdate()
+              })
               console.dir("++",this.model.attachFiles)
             }else{
               console.log(res.message);
@@ -394,16 +227,15 @@
           // Load Constr 疏散图片
           getAction(that.url.constrImage.list, params).then((res)=>{
             if(res.success){
-              that.model.imageFiles = res.result.map(x=> x.attachUrl).join(',')
+              this.$nextTick(() => {
+                that.model.imageFiles = res.result.map(x=> x.attachUrl).join(',')
+                that.$forceUpdate()
+              })
               console.dir("++",this.model.imageFiles)
             }else{
               console.log(res.message);
             }
           });
-
-          this.requestSubTableData(this.url.constrArea.list, params, this.constrAreaTable)
-          this.requestSubTableData(this.url.constrAttach.list, params, this.constrAttachTable)
-          this.requestSubTableData(this.url.constrStreet.list, params, this.constrStreetTable)
         }
       },
       //校验所有一对一子表表单
@@ -456,9 +288,9 @@
  
         return {
           ...main, // 展开
-          constrAreaList: allValues.tablesValue[0].tableData,
+          constrAreaList: [],
           constrAttachList: attachList,
-          constrStreetList: allValues.tablesValue[2].tableData,
+          constrStreetList: [],
         }
       },
       validateError(msg){
