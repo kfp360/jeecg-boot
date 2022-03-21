@@ -86,7 +86,7 @@
         this.$refs.form.clearValidate()
       },
       handleOk () {
-        const that = this;
+       const that = this;
         // 触发表单验证
        this.$refs.form.validate(valid => {
           if (valid) {
